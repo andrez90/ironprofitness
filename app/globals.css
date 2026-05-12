@@ -1,0 +1,125 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  @apply m-0 p-0 box-border;
+}
+
+:root {
+  --primary: #ef4444;
+  --secondary: #f97316;
+  --success: #22c55e;
+  --warning: #eab308;
+  --info: #8b5cf6;
+  --dark: #0a0a0a;
+  --darker: #111;
+  --border: #1e293b;
+  --text: #e2e8f0;
+  --text-muted: #94a3b8;
+  --text-faint: #64748b;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  @apply bg-dark text-text font-sans;
+  background: linear-gradient(135deg, #0a0a0a 0%, #111111 50%, #0a0a0a 100%);
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  @apply w-2 h-2;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-darker;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-primary rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-secondary;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { @apply opacity-0; }
+  to { @apply opacity-100; }
+}
+
+@keyframes slideIn {
+  from { @apply opacity-0 translate-y-5; }
+  to { @apply opacity-100 translate-y-0; }
+}
+
+@keyframes glow {
+  0%, 100% {
+    text-shadow: 0 0 20px rgba(239, 68, 68, 0.85), 0 0 40px rgba(249, 115, 22, 0.65);
+  }
+  50% {
+    text-shadow: 0 0 26px rgba(239, 68, 68, 0.95), 0 0 48px rgba(249, 115, 22, 0.85);
+  }
+}
+
+/* Utility Classes */
+.container-custom {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+.card-base {
+  @apply bg-opacity-10 bg-white border border-border rounded-2xl p-6;
+}
+
+.badge {
+  @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold;
+}
+
+.badge-primary {
+  @apply bg-primary bg-opacity-20 text-primary;
+}
+
+.badge-secondary {
+  @apply bg-secondary bg-opacity-20 text-secondary;
+}
+
+.btn-base {
+  @apply inline-flex items-center justify-center px-6 py-3 rounded-lg font-semibold transition-all duration-200;
+}
+
+.btn-primary {
+  @apply btn-base bg-primary text-white hover:bg-red-600 active:scale-95;
+}
+
+.btn-secondary {
+  @apply btn-base bg-secondary text-white hover:bg-orange-500 active:scale-95;
+}
+
+.btn-outline {
+  @apply btn-base border border-primary text-primary hover:bg-primary hover:text-white;
+}
+
+.input-base {
+  @apply w-full px-4 py-3 bg-opacity-5 bg-white border border-border rounded-lg text-text placeholder-text-muted focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20 transition-all duration-200;
+}
+
+.gradient-text {
+  @apply bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent;
+}
+
+.glass {
+  @apply bg-white bg-opacity-5 backdrop-blur-md border border-white border-opacity-10;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .container-custom {
+    @apply px-3;
+  }
+}
