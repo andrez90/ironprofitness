@@ -1,262 +1,157 @@
 'use client'
 
-import { useState } from 'react'
-import { mockProducts, mockCombos } from '@/app/lib/data'
-import { Trash2, Plus, BarChart3, ShoppingBag, Users, Settings } from 'lucide-react'
+import { motion } from 'framer-motion'
+import { TrendingUp, Package, Users, DollarSign, AlertCircle } from 'lucide-react'
+import { ONDA_FITNESS_PRODUCTS } from '../lib/products-data'
 
 export default function AdminDashboard() {
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'products' | 'inventory' | 'orders' | 'settings'>('dashboard')
-  const [products, setProducts] = useState(mockProducts)
-  const [newProduct, setNewProduct] = useState({ name: '', price: 0, category: '', stock: 0 })
-
-  const totalRevenue = products.reduce((sum, p) => sum + (p.price * 10), 0)
-  const totalProducts = products.length
-  const lowStockItems = products.filter(p => p.stock < 5).length
-
-  const handleAddProduct = () => {
-    if (newProduct.name && newProduct.price > 0) {
-      const product = {
-        ...newProduct,
-        id: Date.now().toString(),
-        rating: 4.5,
-        reviews: 0,
-        sku: `SKU-${Date.now()}`,
-        description: 'Nuevo producto',
-        image: 'https://images.unsplash.com/photo-1599599810694-b5ac4dd26b86?w=500&q=80',
-        stock: newProduct.stock,
-      }
-      setProducts([...products, product as any])
-      setNewProduct({ name: '', price: 0, category: '', stock: 0 })
-    }
-  }
-
-  const handleDeleteProduct = (id: string) => {
-    setProducts(products.filter(p => p.id !== id))
-  }
+  const lowStockProducts = ONDA_FITNESS_PRODUCTS.filter(p => p.stock < 30)
 
   return (
-    <div className="min-h-screen bg-dark flex">
-      {/* Sidebar */}
-      <div className="w-64 bg-darker border-r border-border p-6 fixed h-screen overflow-y-auto">
-        <h1 className="text-2xl font-bold mb-8 text-primary">IRONPRO ADMIN</h1>
-
-        <nav className="space-y-2">
-          {[
-            { id: 'dashboard', label: 'Dashboard', icon: BarChart3 },
-            { id: 'products', label: 'Productos', icon: ShoppingBag },
-            { id: 'inventory', label: 'Inventario', icon: 'Box' },
-            { id: 'orders', label: 'Pedidos', icon: 'Package' },
-            { id: 'settings', label: 'Configuración', icon: Settings },
-          ].map((item) => (
-            <button
-              key={item.id}
-              onClick={() => setActiveTab(item.id as any)}
-              className={`w-full text-left px-4 py-3 rounded-lg transition flex items-center gap-2 ${
-                activeTab === item.id
-                  ? 'bg-primary text-white'
-                  : 'text-text-muted hover:text-primary'
-              }`}
-            >
-              {item.icon === 'Box' ? (
-                <span>📦</span>
-              ) : item.icon === 'Package' ? (
-                <span>📮</span>
-              ) : (
-                <item.icon className="w-4 h-4" />
-              )}
-              {item.label}
-            </button>
-          ))}
-        </nav>
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold">Dashboard</h1>
+        <div className="flex items-center gap-2 text-sm text-gray-400">
+          <span>Última actualización:</span>
+          <span className="text-white">Justo ahora</span>
+        </div>
       </div>
 
-      {/* Main Content */}
-      <div className="flex-1 ml-64 p-8">
-        {/* Dashboard */}
-        {activeTab === 'dashboard' && (
-          <div>
-            <h2 className="text-3xl font-bold mb-8">Dashboard</h2>
-
-            <div className="grid md:grid-cols-4 gap-4 mb-8">
-              <div className="bg-opacity-10 bg-white border border-border rounded-lg p-6">
-                <p className="text-text-muted text-sm mb-2">Ingresos Totales</p>
-                <p className="text-3xl font-bold text-primary">
-                  ${(totalRevenue).toLocaleString('es-CO')}
-                </p>
-              </div>
-              <div className="bg-opacity-10 bg-white border border-border rounded-lg p-6">
-                <p className="text-text-muted text-sm mb-2">Productos</p>
-                <p className="text-3xl font-bold text-secondary">{totalProducts}</p>
-              </div>
-              <div className="bg-opacity-10 bg-white border border-border rounded-lg p-6">
-                <p className="text-text-muted text-sm mb-2">Stock Bajo</p>
-                <p className="text-3xl font-bold text-warning">{lowStockItems}</p>
-              </div>
-              <div className="bg-opacity-10 bg-white border border-border rounded-lg p-6">
-                <p className="text-text-muted text-sm mb-2">Combos</p>
-                <p className="text-3xl font-bold text-success">{mockCombos.length}</p>
-              </div>
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-white/5 border border-white/10 rounded-2xl p-6 relative overflow-hidden group">
+          <div className="absolute top-0 right-0 w-24 h-24 bg-green-500/10 rounded-full blur-2xl group-hover:bg-green-500/20 transition" />
+          <div className="flex items-center gap-4 mb-4">
+            <div className="p-3 bg-green-500/20 rounded-xl text-green-400">
+              <DollarSign className="w-6 h-6" />
+            </div>
+            <div>
+              <p className="text-sm text-gray-400">Ventas del Mes</p>
+              <p className="text-2xl font-bold">$12.4M</p>
             </div>
           </div>
-        )}
+          <div className="flex items-center gap-2 text-sm">
+            <TrendingUp className="w-4 h-4 text-green-400" />
+            <span className="text-green-400">+15%</span>
+            <span className="text-gray-500">vs mes anterior</span>
+          </div>
+        </motion.div>
 
-        {/* Products */}
-        {activeTab === 'products' && (
-          <div>
-            <h2 className="text-3xl font-bold mb-8">Gestionar Productos</h2>
-
-            {/* Add Product Form */}
-            <div className="bg-opacity-10 bg-white border border-border rounded-lg p-6 mb-8">
-              <h3 className="text-xl font-bold mb-4">Agregar Producto</h3>
-              <div className="grid md:grid-cols-5 gap-4">
-                <input
-                  type="text"
-                  placeholder="Nombre"
-                  value={newProduct.name}
-                  onChange={(e) => setNewProduct({...newProduct, name: e.target.value})}
-                  className="input-base"
-                />
-                <input
-                  type="number"
-                  placeholder="Precio"
-                  value={newProduct.price}
-                  onChange={(e) => setNewProduct({...newProduct, price: Number(e.target.value)})}
-                  className="input-base"
-                />
-                <input
-                  type="text"
-                  placeholder="Categoría"
-                  value={newProduct.category}
-                  onChange={(e) => setNewProduct({...newProduct, category: e.target.value})}
-                  className="input-base"
-                />
-                <input
-                  type="number"
-                  placeholder="Stock"
-                  value={newProduct.stock}
-                  onChange={(e) => setNewProduct({...newProduct, stock: Number(e.target.value)})}
-                  className="input-base"
-                />
-                <button
-                  onClick={handleAddProduct}
-                  className="btn-primary flex items-center justify-center gap-2"
-                >
-                  <Plus className="w-4 h-4" />
-                  Agregar
-                </button>
-              </div>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-white/5 border border-white/10 rounded-2xl p-6 relative overflow-hidden group">
+          <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl group-hover:bg-blue-500/20 transition" />
+          <div className="flex items-center gap-4 mb-4">
+            <div className="p-3 bg-blue-500/20 rounded-xl text-blue-400">
+              <Package className="w-6 h-6" />
             </div>
+            <div>
+              <p className="text-sm text-gray-400">Pedidos Activos</p>
+              <p className="text-2xl font-bold">48</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2 text-sm">
+            <span className="text-blue-400">12 por despachar</span>
+          </div>
+        </motion.div>
 
-            {/* Products Table */}
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead className="bg-darker border-b border-border">
-                  <tr>
-                    <th className="text-left px-4 py-3 font-bold">Producto</th>
-                    <th className="text-left px-4 py-3 font-bold">Precio</th>
-                    <th className="text-left px-4 py-3 font-bold">Stock</th>
-                    <th className="text-left px-4 py-3 font-bold">Categoría</th>
-                    <th className="text-left px-4 py-3 font-bold">Acciones</th>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-white/5 border border-white/10 rounded-2xl p-6 relative overflow-hidden group">
+          <div className="absolute top-0 right-0 w-24 h-24 bg-purple-500/10 rounded-full blur-2xl group-hover:bg-purple-500/20 transition" />
+          <div className="flex items-center gap-4 mb-4">
+            <div className="p-3 bg-purple-500/20 rounded-xl text-purple-400">
+              <Users className="w-6 h-6" />
+            </div>
+            <div>
+              <p className="text-sm text-gray-400">Nuevos Clientes</p>
+              <p className="text-2xl font-bold">124</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2 text-sm">
+            <TrendingUp className="w-4 h-4 text-green-400" />
+            <span className="text-green-400">+8%</span>
+            <span className="text-gray-500">vs mes anterior</span>
+          </div>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-white/5 border border-white/10 rounded-2xl p-6 relative overflow-hidden group">
+          <div className="absolute top-0 right-0 w-24 h-24 bg-red-500/10 rounded-full blur-2xl group-hover:bg-red-500/20 transition" />
+          <div className="flex items-center gap-4 mb-4">
+            <div className="p-3 bg-red-500/20 rounded-xl text-red-400">
+              <AlertCircle className="w-6 h-6" />
+            </div>
+            <div>
+              <p className="text-sm text-gray-400">Alertas Stock</p>
+              <p className="text-2xl font-bold text-red-400">{lowStockProducts.length}</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2 text-sm">
+            <span className="text-red-400">Requieren atención</span>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Recent Orders */}
+        <div className="lg:col-span-2 bg-white/5 border border-white/10 rounded-2xl p-6">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-lg font-bold">Últimos Pedidos</h2>
+            <button className="text-sm text-red-400 hover:text-red-300">Ver todos</button>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-sm">
+              <thead className="text-gray-400 border-b border-white/10">
+                <tr>
+                  <th className="pb-3 font-medium">Pedido</th>
+                  <th className="pb-3 font-medium">Cliente</th>
+                  <th className="pb-3 font-medium">Fecha</th>
+                  <th className="pb-3 font-medium">Estado</th>
+                  <th className="pb-3 font-medium text-right">Total</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-white/5">
+                {[1, 2, 3, 4, 5].map((i) => (
+                  <tr key={i} className="hover:bg-white/5 transition">
+                    <td className="py-4 font-medium">#ORD-{1000 + i}</td>
+                    <td className="py-4 text-gray-300">Cliente Ejemplo {i}</td>
+                    <td className="py-4 text-gray-400">Hoy, 10:4{i} AM</td>
+                    <td className="py-4">
+                      <span className={`px-2 py-1 rounded-full text-xs font-semibold ${i % 2 === 0 ? 'bg-green-500/20 text-green-400' : 'bg-yellow-500/20 text-yellow-400'}`}>
+                        {i % 2 === 0 ? 'Completado' : 'Pendiente'}
+                      </span>
+                    </td>
+                    <td className="py-4 text-right font-bold">${(120000 * i).toLocaleString('es-CO')}</td>
                   </tr>
-                </thead>
-                <tbody>
-                  {products.map((product) => (
-                    <tr key={product.id} className="border-b border-border hover:bg-opacity-5 hover:bg-white transition">
-                      <td className="px-4 py-3">{product.name}</td>
-                      <td className="px-4 py-3">${product.price.toLocaleString('es-CO')}</td>
-                      <td className="px-4 py-3">
-                        <span className={product.stock < 5 ? 'text-warning font-bold' : ''}>
-                          {product.stock}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3">{product.category}</td>
-                      <td className="px-4 py-3">
-                        <button
-                          onClick={() => handleDeleteProduct(product.id)}
-                          className="text-red-400 hover:text-red-300 transition flex items-center gap-1"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                          Eliminar
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        )}
-
-        {/* Inventory */}
-        {activeTab === 'inventory' && (
-          <div>
-            <h2 className="text-3xl font-bold mb-8">Inventario</h2>
-
-            <div className="grid gap-4">
-              {products
-                .filter(p => p.stock < 10)
-                .map((product) => (
-                  <div key={product.id} className="bg-opacity-10 bg-white border border-border rounded-lg p-4 flex items-center justify-between">
-                    <div>
-                      <h3 className="font-bold">{product.name}</h3>
-                      <p className="text-sm text-text-muted">{product.category}</p>
-                    </div>
-                    <div className="text-right">
-                      <p className={product.stock < 3 ? 'font-bold text-red-400' : product.stock < 5 ? 'font-bold text-warning' : ''}>
-                        {product.stock} unidades
-                      </p>
-                      <p className="text-sm text-text-muted">SKU: {product.sku}</p>
-                    </div>
-                  </div>
                 ))}
-            </div>
+              </tbody>
+            </table>
           </div>
-        )}
+        </div>
 
-        {/* Orders */}
-        {activeTab === 'orders' && (
-          <div>
-            <h2 className="text-3xl font-bold mb-8">Pedidos</h2>
-            <p className="text-text-muted">Sistema de pedidos en desarrollo...</p>
+        {/* Low Stock Alerts */}
+        <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-lg font-bold">Stock Bajo</h2>
+            <AlertCircle className="w-5 h-5 text-red-400" />
           </div>
-        )}
-
-        {/* Settings */}
-        {activeTab === 'settings' && (
-          <div>
-            <h2 className="text-3xl font-bold mb-8">Configuración</h2>
-
-            <div className="bg-opacity-10 bg-white border border-border rounded-lg p-6 max-w-md">
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-semibold mb-2">Nombre de la Tienda</label>
-                  <input
-                    type="text"
-                    defaultValue="IRONPRO FITNESS"
-                    className="input-base"
-                  />
+          <div className="space-y-4">
+            {lowStockProducts.slice(0, 5).map((product) => (
+              <div key={product.id} className="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-red-500/20">
+                <div className="w-10 h-10 bg-black rounded-lg flex items-center justify-center text-xl">
+                  {product.category === 'proteina' ? '💪' : '⚡'}
                 </div>
-                <div>
-                  <label className="block text-sm font-semibold mb-2">Email de Contacto</label>
-                  <input
-                    type="email"
-                    defaultValue="info@ironprofitness.com"
-                    className="input-base"
-                  />
+                <div className="flex-1 min-w-0">
+                  <p className="font-semibold text-sm truncate">{product.name}</p>
+                  <p className="text-xs text-gray-400">SKU: {product.sku}</p>
                 </div>
-                <div>
-                  <label className="block text-sm font-semibold mb-2">WhatsApp</label>
-                  <input
-                    type="text"
-                    defaultValue="+57 300 000 0000"
-                    className="input-base"
-                  />
+                <div className="text-right">
+                  <p className="font-bold text-red-400">{product.stock}</p>
+                  <p className="text-xs text-gray-500">unids</p>
                 </div>
-                <button className="btn-primary w-full py-3">Guardar Cambios</button>
               </div>
-            </div>
+            ))}
           </div>
-        )}
+          <button className="w-full mt-6 py-2 border border-white/10 rounded-lg text-sm text-gray-300 hover:bg-white/5 hover:text-white transition">
+            Ver inventario completo
+          </button>
+        </div>
       </div>
     </div>
   )

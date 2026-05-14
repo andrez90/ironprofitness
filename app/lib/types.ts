@@ -76,12 +76,13 @@ export interface Combo {
   name: string
   description: string
   image: string
-  products: Product[]
+  products: string[] | Product[]
   originalPrice: number
   discountedPrice: number
   discount: number
   badge?: string
-  created_at: string
+  category?: 'volumen' | 'definicion' | 'fuerza'
+  created_at?: string
 }
 
 export interface Review {
@@ -102,4 +103,33 @@ export interface Promotion {
   minAmount?: number
   maxUses?: number
   expiresAt: string
+}
+
+export interface RecipeIngredient {
+  productId: string
+  quantity: number
+  unit: string
+  product?: Product
+}
+
+export interface Recipe {
+  id: string
+  name: string
+  description: string
+  category: 'batido' | 'torta' | 'snack' | 'pancakes' | 'brownie' | 'pudin'
+  difficulty: 'fácil' | 'medio' | 'difícil'
+  prepTime: number // minutos
+  servings: number
+  image: string
+  ingredients: RecipeIngredient[]
+  instructions: string[]
+  nutrition: {
+    calories: number
+    protein: number
+    carbs: number
+    fat: number
+    fiber: number
+  }
+  tags: string[]
+  created_at: string
 }

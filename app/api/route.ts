@@ -3,7 +3,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 // Health check endpoint
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
   return NextResponse.json({
     status: 'ok',
     message: 'IRONPRO FITNESS API is running',

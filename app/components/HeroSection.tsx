@@ -1,106 +1,202 @@
 'use client'
 
-import { storeConfig } from '@/app/lib/config'
-import { mockCombos, mockProducts } from '@/app/lib/data'
 import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
+import { motion } from 'framer-motion'
 
 export function HeroSection() {
   return (
-    <section className="relative overflow-hidden">
-      {/* Background Gradient */}
-      <div className="absolute inset-0 bg-gradient-dark opacity-50" />
-      <div className="absolute inset-0 opacity-30">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-primary rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse" />
-        <div className="absolute bottom-20 right-10 w-72 h-72 bg-secondary rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse animation-delay-2000" />
+    <section className="relative w-full min-h-screen bg-gradient-to-br from-black via-gray-900 to-black overflow-hidden flex items-center py-12 sm:py-0">
+      
+      {/* ANIMATED BACKGROUND ELEMENTS */}
+      <div className="absolute inset-0 overflow-hidden">
+        {/* Gradient orbs */}
+        <motion.div
+          animate={{ y: [0, 50, 0] }}
+          transition={{ duration: 8, repeat: Infinity }}
+          className="absolute top-0 left-1/4 w-96 h-96 bg-red-600/20 rounded-full blur-3xl"
+        />
+        <motion.div
+          animate={{ y: [50, 0, 50] }}
+          transition={{ duration: 10, repeat: Infinity }}
+          className="absolute bottom-0 right-1/4 w-96 h-96 bg-orange-600/20 rounded-full blur-3xl"
+        />
+        <div className="absolute inset-0 bg-grid-white/5 bg-[size:50px_50px]" />
       </div>
 
-      <div className="relative container-custom py-16 md:py-24">
-        <div className="grid md:grid-cols-2 gap-8 items-center">
-          {/* Left Content */}
-          <div className="space-y-6 animate-fade-in">
-            <div>
-              <h1 className="text-4xl md:text-6xl font-black mb-4 leading-tight">
-                <span className="gradient-text">Transforma</span>
-                <br />
-                <span className="text-text">tu físico con</span>
-                <br />
-                <span className="gradient-text">IRONPRO FITNESS</span>
-              </h1>
-              <p className="text-lg text-text-muted leading-relaxed">
-                Suplementos premium 100% originales. Entrega rápida, precios competitivos y asesoría experta.
+      {/* CONTENT */}
+      <div className="container mx-auto px-4 sm:px-6 relative z-10 w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+          
+          {/* LEFT: TEXT */}
+          <motion.div
+            initial={{ opacity: 0, x: -40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="inline-block px-4 py-2 bg-gradient-to-r from-red-600/20 to-orange-600/20 border border-red-500/50 rounded-full mb-6"
+            >
+              <p className="text-sm font-semibold bg-gradient-to-r from-red-400 to-orange-400 bg-clip-text text-transparent">
+                🔥 Suplementos Premium Comprobados
               </p>
-            </div>
+            </motion.div>
 
-            {/* CTAs */}
-            <div className="flex flex-col sm:flex-row gap-3">
-              <Link
-                href="/products"
-                className="btn-primary inline-flex items-center justify-center gap-2 group"
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black mb-6 leading-tight">
+              <span className="bg-gradient-to-r from-red-500 via-orange-400 to-red-400 bg-clip-text text-transparent">
+                Transforma
+              </span>
+              <br />
+              <span className="text-white">Tu Físico</span>
+              <br />
+              <span className="text-gray-400">Hoy</span>
+            </h1>
+
+            <p className="text-lg text-gray-300 mb-8 max-w-md leading-relaxed">
+              Los mejores suplementos deportivos con envío rápido a toda Colombia. Proteínas premium, creatinas puras, pre-entrenos potentes y todo lo que necesitas para tu transformación.
+            </p>
+
+            {/* CTA BUTTONS */}
+            <div className="flex flex-col sm:flex-row gap-4 mb-8">
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="flex-1 sm:flex-none"
               >
-                Comprar Ahora
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </Link>
-              <Link
-                href="/combos"
-                className="btn-outline inline-flex items-center justify-center gap-2"
+                <Link
+                  href="/products"
+                  className="block px-8 py-4 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold rounded-xl shadow-lg shadow-red-600/50 transition text-center"
+                >
+                  🛒 Comprar Ahora
+                </Link>
+              </motion.div>
+
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="flex-1 sm:flex-none"
               >
-                Ver Combos 🎁
-              </Link>
+                <Link
+                  href="/combos"
+                  className="block px-8 py-4 border-2 border-red-500/50 hover:border-red-400 text-white font-bold rounded-xl bg-white/5 hover:bg-white/10 transition text-center"
+                >
+                  🎁 Ver Combos
+                </Link>
+              </motion.div>
             </div>
 
-            {/* Stats */}
-            <div className="grid grid-cols-3 gap-4 pt-4">
-              <div>
-                <p className="text-2xl font-bold text-primary">500+</p>
-                <p className="text-sm text-text-muted">Productos</p>
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-secondary">10K+</p>
-                <p className="text-sm text-text-muted">Clientes</p>
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-success">24h</p>
-                <p className="text-sm text-text-muted">Despacho</p>
-              </div>
+            {/* TRUST BADGES */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6 }}
+                className="flex items-center gap-3 text-sm text-gray-300 p-3 rounded-lg bg-white/5 border border-white/10"
+              >
+                <span className="text-2xl">✅</span> 
+                <div>
+                  <p className="font-semibold text-white">Originales</p>
+                  <p className="text-xs text-gray-500">Garantizados</p>
+                </div>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.7 }}
+                className="flex items-center gap-3 text-sm text-gray-300 p-3 rounded-lg bg-white/5 border border-white/10"
+              >
+                <span className="text-2xl">🚚</span> 
+                <div>
+                  <p className="font-semibold text-white">Envío Rápido</p>
+                  <p className="text-xs text-gray-500">2-3 días</p>
+                </div>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.8 }}
+                className="flex items-center gap-3 text-sm text-gray-300 p-3 rounded-lg bg-white/5 border border-white/10"
+              >
+                <span className="text-2xl">💬</span> 
+                <div>
+                  <p className="font-semibold text-white">Soporte 24/7</p>
+                  <p className="text-xs text-gray-500">WhatsApp</p>
+                </div>
+              </motion.div>
             </div>
-          </div>
+          </motion.div>
 
-          {/* Right Image */}
-          <div className="relative hidden md:block">
-            <div className="aspect-square relative">
-              <img
-                src="https://images.unsplash.com/photo-1517836357463-d25ddfcbf042?w=600&q=80"
-                alt="Hero Image"
-                className="w-full h-full object-cover rounded-2xl shadow-2xl"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-dark via-transparent rounded-2xl" />
+          {/* RIGHT: IMAGE/VISUAL */}
+          <motion.div
+            initial={{ opacity: 0, x: 40, scale: 0.9 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="hidden lg:flex relative justify-center"
+          >
+            <div className="relative w-full max-w-md aspect-square">
+              {/* Floating card effect */}
+              <motion.div
+                animate={{ y: [0, -30, 0] }}
+                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                className="w-full h-full"
+              >
+                <div className="w-full h-full bg-gradient-to-br from-red-500/30 via-orange-500/20 to-red-600/30 rounded-3xl backdrop-blur-md border border-white/20 flex items-center justify-center overflow-hidden shadow-2xl shadow-red-600/50">
+                  <div className="text-center">
+                    <motion.div
+                      animate={{ scale: [1, 1.05, 1] }}
+                      transition={{ duration: 3, repeat: Infinity }}
+                      className="text-8xl mb-4"
+                    >
+                      💪
+                    </motion.div>
+                    <h3 className="text-2xl font-bold text-white mb-2">Premium</h3>
+                    <p className="text-gray-300 mb-6">Suplementos de Élite</p>
+                    <div className="grid grid-cols-3 gap-2">
+                      <motion.div
+                        whileHover={{ scale: 1.1 }}
+                        className="px-3 py-2 bg-white/10 rounded-lg backdrop-blur border border-white/20"
+                      >
+                        <p className="text-xs text-gray-400">Proteína</p>
+                        <p className="text-lg font-bold bg-gradient-to-r from-red-400 to-orange-400 bg-clip-text text-transparent">5★</p>
+                      </motion.div>
+                      <motion.div
+                        whileHover={{ scale: 1.1 }}
+                        className="px-3 py-2 bg-white/10 rounded-lg backdrop-blur border border-white/20"
+                      >
+                        <p className="text-xs text-gray-400">Creatina</p>
+                        <p className="text-lg font-bold bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent">5★</p>
+                      </motion.div>
+                      <motion.div
+                        whileHover={{ scale: 1.1 }}
+                        className="px-3 py-2 bg-white/10 rounded-lg backdrop-blur border border-white/20"
+                      >
+                        <p className="text-xs text-gray-400">Pre</p>
+                        <p className="text-lg font-bold bg-gradient-to-r from-red-400 to-orange-400 bg-clip-text text-transparent">5★</p>
+                      </motion.div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
 
-      {/* Trust Badges */}
-      <div className="border-t border-b border-border bg-opacity-100 bg-white">
-        <div className="container-custom py-6 flex flex-wrap justify-around gap-4 text-center text-sm">
-          <div>
-            <p className="text-primary font-bold">✅ 100% Originales</p>
-            <p className="text-text-muted text-xs">Todos nuestros productos</p>
-          </div>
-          <div>
-            <p className="text-primary font-bold">📦 Envío Gratis</p>
-            <p className="text-text-muted text-xs">Compras mayores a $500.000</p>
-          </div>
-          <div>
-            <p className="text-primary font-bold">🔄 Garantía</p>
-            <p className="text-text-muted text-xs">Devolución 30 días</p>
-          </div>
-          <div>
-            <p className="text-primary font-bold">💬 Soporte 24/7</p>
-            <p className="text-text-muted text-xs">Por WhatsApp y email</p>
+      {/* SCROLL INDICATOR */}
+      <motion.div
+        animate={{ y: [0, 10, 0] }}
+        transition={{ duration: 2, repeat: Infinity }}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden sm:block"
+      >
+        <div className="text-gray-400 text-center">
+          <p className="text-xs mb-2">Scroll para ver más</p>
+          <div className="w-6 h-10 border-2 border-gray-600 rounded-full flex justify-center">
+            <motion.div className="w-1 h-2 bg-gradient-to-b from-red-500 to-orange-500 rounded-full mt-2" />
           </div>
         </div>
-      </div>
+      </motion.div>
     </section>
   )
 }
